@@ -13,7 +13,7 @@ const client = new ApolloClient({
 
   uri: '/graphql'
 })
-
+//router & specify which route to which page, page grabs components
 function App() {
   return (
     <div className="App">
