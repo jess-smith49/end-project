@@ -1,4 +1,5 @@
 const { AuthenticationError } = require('apollo-server-core');
+const { set } = require('../config/connection');
 const {User} = require('../models');
 
 const resolvers = {
@@ -38,9 +39,44 @@ const resolvers = {
                 const token = signToken(user);
 
                 return {token, user};
-            }
+            },
+
+           addSet: async(parent, {setData}, context) =>{
+               if(context.user){
+                const newSet = await User.findbByIdAndUpdate(
+                    {_id: context.user._id},
+                    {$push: {set: {setData}}},
+                    {new: true}
+                )
+
+                return newSet;
+               }
+           },
+
+           addCard: async(parent, {cardId}, context) => {
+               if(context.user){
+                   const newCard = await StudySet.findOneAndUpdate(
+                       {_id: context.set._id},
+                       {$push: {setData: cardId}},
+                       {new: true}
+                   );
+
+                   return newCard;
+               }
+           },
+
+           removeCard: async(parent, {cardId}, context) => {
+               if(context.user){
+                  const removeCard = await StudySet.findOneAndUpdate(
+                      {_id: context.user._id},
+                      {$pull: {StudySet: {cardId}}},
+                      {new: true}
+                  )
+
+                  return removeCard
+               }
+           }
         }
-
-
-
 }
+
+module.exports = resolvers;

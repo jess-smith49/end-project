@@ -23,3 +23,24 @@ export const ADD_USER = gql`
     }
   }
 `;
+
+export const ADD_SET = gql`
+  mutation addSet($setName: String!){
+    addSet(setName: $setName){
+      _id
+      setName
+      setCard {
+        cardId
+        question
+        answer
+
+      }
+    }
+  }
+`;
+
+export const ADD_CARD = gql `
+
+
+
+`
